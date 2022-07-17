@@ -1,11 +1,12 @@
-from sqlalchemy import Table, MetaData
+
 from sqlalchemy import Column, String, Integer, DateTime, Text
 from datetime import datetime
-from . import metadata
+from . import Base
 
-Post = Table('posts', metadata,
-             Column('id', Integer, primary_key=True, unique=True, autoincrement=True),
-             Column('title', String(50), nullable=False),
-             Column('content', Text, nullable=False),
-             Column('createdAt', DateTime, nullable=False, default=datetime.utcnow)
-             )
+
+class Post(Base):
+    __tablename__ = 'posts'
+    id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
+    title = Column(String(50), nullable=False)
+    content = Column(Text, nullable=False)
+    createdAt = Column(DateTime, nullable=False, default=datetime.utcnow)

@@ -3,7 +3,6 @@ from flask import Flask
 from routes.blogs import blogs
 from routes.users import users
 from routes.auth import auth
-from setup import init_db
 
 
 app = Flask(__name__)

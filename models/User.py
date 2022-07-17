@@ -1,12 +1,12 @@
-from sqlalchemy import Table, String, Column, Integer, Text, DateTime, MetaData
+from sqlalchemy import String, Column, Integer, Text, DateTime
 from datetime import datetime
-from . import metadata
+from . import Base
 
 
-User = Table('users', metadata,
-             Column('id', Integer, primary_key=True, unique=True, autoincrement=True),
-             Column('username', String(30), nullable=False),
-             Column('email', String(30), nullable=False, unique=True),
-             Column('password', String(150), nullable=False),
-             Column('joinedAt', DateTime, nullable=False, default=datetime.utcnow)
-             )
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
+    username = Column(String(30), nullable=False)
+    email = Column(String(30), nullable=False, unique=True)
+    password = Column(String(150), nullable=False)
+    joinedAt = Column(DateTime, nullable=False, default=datetime.utcnow)

@@ -1,14 +1,12 @@
 import os
 from sqlalchemy import create_engine
-from models.User import User
-from models.Post import Post
+from sqlalchemy.orm import scoped_session, sessionmaker
+from models import Base
 
 DB_PATH = os.path.dirname(__file__)
-DB_URL = f'sqlite:///{DB_PATH}/database.db'
-
+DB_URL = f'sqlite:///database.db'
+print(DB_URL)
 engine = create_engine(DB_URL)
+session = scoped_session(sessionmaker(bind=engine))
 
-
-def init_db():
-    Post.create(engine)
-    User.create(engine)
+Base.metadata.create_all(engine)
