@@ -11,7 +11,7 @@ class User(Base):
     username = Column(String(30), nullable=False)
     email = Column(String(30), nullable=False, unique=True)
     passwordHash = Column(String(150), nullable=False)
-    posts = relationship('Post', backref='author')
+    posts = relationship('Post', back_populates='author', lazy=False)
     joinedAt = Column(DateTime, nullable=False, default=datetime.utcnow)
 
     @property

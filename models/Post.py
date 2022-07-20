@@ -12,6 +12,7 @@ class Post(Base):
     content = Column(Text, nullable=False)
     createdAt = Column(DateTime, nullable=False, default=datetime.utcnow)
     authorId = Column(Integer, ForeignKey('users.id'), nullable=False)
+    author = relationship('User', back_populates='posts')
 
     def __repr__(self):
         return f"Post<id:{self.id}, title:{self.title}, createdAt:{self.createdAt}, authorId:{self.authorId}>"
