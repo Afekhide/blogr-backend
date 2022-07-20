@@ -15,7 +15,7 @@ channel_request = youtube.search().list(
 comments = youtube.commentThreads().list(
     part='replies',
     videoId='LR44sgkBgmU'
-).execute()['items']
+).execute()
 
 channel_response = channel_request.execute()
 channel = channel_response['items']

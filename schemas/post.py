@@ -6,4 +6,5 @@ class PostSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Post
         load_instance = True
+        include_fk = True
         include_relationships = True

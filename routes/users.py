@@ -1,43 +1,48 @@
-from flask import Blueprint, request, session
+from flask import Blueprint, request
+import time
 from models.User import User
-from setup import engine
-from sqlalchemy import insert, delete, select
+from schemas import UserSchema
+from setup import session as dbsession
+from setup import schema_list_to_dict
+from flask_cors import cross_origin
 
 users = Blueprint(name='users', import_name=__name__, url_prefix='/users')
 
 
+@cross_origin()
 @users.route('/', methods=['GET'])
-def get_users():
-    statement = select([User])
-    resultProxy = engine.execute(statement)
-    resultSet = resultProxy.fetchall()
-    toDict = lambda row: {c.name: str(getattr(row, c.name)) for c in row.__table__.columns}
+def create():
+    users = dbsession.query(User).order_by(User.id).all()
+    users_schema = UserSchema()
+    users = users_schema.dumps(users, many=True)
     return {
-        'users': [toDict(row) for row in resultSet]
+        'users': schema_list_to_dict(users)
     }
 
 
-@users.route('/', methods=['POST'])
-def create():
-    stmt = User.insert().values({
-        'username': 'Jael',
-        'password': 123456,
-        'email': 'Jael@gmaiz.com'
-    })
-    try:
-        res = engine.execute(stmt)
-        print(res.inserted_primary_key)
-        return {
-            'success': 'User inserted successfully'
-        }
-    except Exception as e:
-        print(e)
-        return {
-            'error': 'Error creating a new user'
-        }
-
+@cross_origin()
 @users.route('/delete/<int:id>', methods=['DELETE'])
 def delete(id):
     return {
         'message': 'successful'
     }
+
+
+@cross_origin()
+@users.route('/', methods=['POST'])
+def new_user():
+    post_data = request.get_json()
+    temp_user = User(username=post_data['username'], email=post_data['email'], password=post_data['password'])
+    try:
+        dbsession.add(temp_user)
+        dbsession.commit()
+        time.sleep(5)
+        return {
+            'success': 'user created successfully'
+        }
+
+    except Exception as e:
+        return {
+            'error': 'could\'nt create new user'
+        }
+

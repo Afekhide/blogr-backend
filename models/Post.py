@@ -1,6 +1,7 @@
 
-from sqlalchemy import Column, String, Integer, DateTime, Text
+from sqlalchemy import Column, String, Integer, DateTime, Text, ForeignKey
 from datetime import datetime
+from sqlalchemy.orm import relationship, backref
 from . import Base
 
 
@@ -10,3 +11,7 @@ class Post(Base):
     title = Column(String(50), nullable=False)
     content = Column(Text, nullable=False)
     createdAt = Column(DateTime, nullable=False, default=datetime.utcnow)
+    authorId = Column(Integer, ForeignKey('users.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Post<id:{self.id}, title:{self.title}, createdAt:{self.createdAt}, authorId:{self.authorId}>"
