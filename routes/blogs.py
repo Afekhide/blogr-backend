@@ -11,10 +11,10 @@ blogs = Blueprint(name='blogs', import_name=__name__, url_prefix='/blogs')
 
 
 @blogs.route('/', methods=['GET'])
-def all():
+def all_posts():
     posts = session.query(Post).order_by(Post.id).all()
+    time.sleep(2)
     blogs = schema_list_to_dict(posts_schema.dumps(posts, many=True))
-    time.sleep(3)
     return {
         'blogs': blogs
     }

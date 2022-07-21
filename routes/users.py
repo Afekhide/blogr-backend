@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, make_response
 import time
 from models.User import User
 from schemas import UserSchema
@@ -10,7 +10,6 @@ from sqlite3 import IntegrityError
 users = Blueprint(name='users', import_name=__name__, url_prefix='/users')
 
 
-@cross_origin()
 @users.route('/', methods=['GET'])
 def create():
     users = dbsession.query(User).order_by(User.id).all()
@@ -21,7 +20,6 @@ def create():
     }
 
 
-@cross_origin()
 @users.route('/delete/<int:id>', methods=['DELETE'])
 def delete(id):
     return {
@@ -52,4 +50,19 @@ def new_user():
         return {
             'error': 'could\'nt create new user'
         }
+
+
+@users.route('/login', methods=['POST'])
+def login():
+    sent_data = request.get_json()
+    print(sent_data)
+    if 'emai' not in sent_data:
+        return {
+            'error': {
+                'message': 'Incomplete request'
+            }
+        }
+
+    return sent_data;
+
 
