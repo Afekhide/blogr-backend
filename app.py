@@ -5,15 +5,15 @@ import secrets
 from flask import Flask
 from flask_cors import CORS
 from routes.blogs import blogs
-from routes.users import users
+from routes.users import user_blueprint
 from routes.auth import auth
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.register_blueprint(auth)
-app.register_blueprint(users)
+app.register_blueprint(user_blueprint)
 app.register_blueprint(blogs)
 
 

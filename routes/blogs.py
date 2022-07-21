@@ -23,9 +23,16 @@ def all_posts():
 @blogs.route('/<int:id>', methods=['GET'])
 def single(id):
     post = session.query(Post).filter(Post.id == id).first()
+    if post is None:
+        return {
+            'error': {
+                'message': f'no blog post matches the specified id:{id}'
+            }
+        }
     print(post)
+    time.sleep(2)
     return {
-        'message': 'Lookup'
+        'success': {'post': posts_schema.dump(post)}
     }
 
 
@@ -39,11 +46,11 @@ def new_post():
         session.commit()
         time.sleep(3)
         return {
-            'success': 'post created successfully'
+            'success': {'message': 'post created successfully'}
         }
 
     except Exception as e:
         print(e)
         return {
-            'error': 'could\'nt create new user'
+            'error': {'message': 'could\'nt create new user'}
         }
