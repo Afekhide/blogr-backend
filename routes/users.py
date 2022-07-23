@@ -1,7 +1,7 @@
 from flask import Blueprint, request, make_response
 import time
 from models.User import User
-from schemas import UserSchema
+from schemas import UserSchema, UserSchemaMinimal
 from setup import session as dbsession
 from setup import schema_list_to_dict
 from sqlite3 import IntegrityError

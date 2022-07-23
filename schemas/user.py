@@ -7,3 +7,11 @@ class UserSchema(SQLAlchemyAutoSchema):
         model = User
         load_instance = True
         include_relationships = True
+
+
+class UserSchemaMinimal(SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+        include_relationships = True
+        exclude = ('email', 'passwordHash')

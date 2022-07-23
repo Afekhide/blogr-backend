@@ -15,6 +15,7 @@ def all_posts():
     posts = session.query(Post).order_by(Post.id).all()
     time.sleep(2)
     blogs = schema_list_to_dict(posts_schema.dumps(posts, many=True))
+    print(blogs)
     return {
         'blogs': blogs
     }
